@@ -1,9 +1,3 @@
-# Sistema de Gerenciamento de Funcionários por Setor
-# Objetivo: Controlar funcionários, permitindo cadastro por setor,
-# listagem, busca por nome e cálculo da média salarial.
-#
-# Entradas: Nome, cargo, setor e salário.
-# Saídas: Lista de funcionários, busca por nome e média salarial.
 
 import json
 import os
