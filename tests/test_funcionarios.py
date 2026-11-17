@@ -79,3 +79,36 @@ def test_arquivo_corrompido_e_preservado(capsys):
 def test_salario_salvo_como_texto_e_convertido():
     f.DATA_FILE.write_text(json.dumps([{"nome": "Ana", "cargo": "", "setor": "", "salario": "5000"}]), encoding="utf-8")
     assert f.carregar_dados()[0]["salario"] == 5000.0
+
+
+def lista_exemplo():
+    return [
+        {"nome": "Ana", "cargo": "Dev", "setor": "TI", "salario": 5000.0},
+        {"nome": "Bruno", "cargo": "Analista", "setor": "RH", "salario": 4000.0},
+    ]
+
+
+def test_remover_com_confirmacao(monkeypatch):
+    lista = lista_exemplo()
+    responder(monkeypatch, "2", "s")
+    f.remover_funcionario(lista)
+    assert [x["nome"] for x in lista] == ["Ana"]
+    assert f.carregar_dados() == lista
+
+
+def test_remover_cancelado_ou_numero_invalido_nao_altera(monkeypatch):
+    lista = lista_exemplo()
+    responder(monkeypatch, "1", "n")
+    f.remover_funcionario(lista)
+    responder(monkeypatch, "9")
+    f.remover_funcionario(lista)
+    responder(monkeypatch, "abc")
+    f.remover_funcionario(lista)
+    assert len(lista) == 2
+
+
+def test_menu_sai_com_zero(monkeypatch, capsys):
+    responder(monkeypatch, "7", "0")
+    f.main()
+    saida = capsys.readouterr().out
+    assert "Opção inválida" in saida and "Encerrando" in saida
