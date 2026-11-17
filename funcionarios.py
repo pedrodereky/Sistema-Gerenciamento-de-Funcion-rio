@@ -1,6 +1,7 @@
 
 import json
 import os
+import re
 from pathlib import Path
 
 DATA_FILE = Path(__file__).parent / "funcionarios.json"
@@ -37,23 +38,26 @@ def salvar_dados(lista):
 
 def parse_salario(salario_str):
     """
-    Converte strings de salário em float aceitando formatos:
-    - "8.200,00" -> remove '.' como separador de milhares e ',' como decimal
-    - "2500,50" -> ',' decimal
-    - "2500.50" -> '.' decimal
+    Converte strings de salário em float aceitando os formatos brasileiro e americano:
+    - "8.200,00" e "8,200.00" -> 8200.0 (o último separador é o decimal)
+    - "8.200" e "1.234.567"   -> milhares (grupos de 3 dígitos depois do ponto)
+    - "2500,50" e "2500.50"   -> decimal
     - pode conter "R$" e espaços
     Retorna float ou lança ValueError se inválido.
     """
     s = salario_str.strip().replace("R$", "").replace(" ", "")
-    # Se contém ambos '.' e ',', assume que '.' é separador de milhares e ',' decimal
     if "." in s and "," in s:
-        s = s.replace(".", "").replace(",", ".")
-    else:
-        # apenas vírgula -> vírgula é decimal
-        if "," in s and "." not in s:
-            s = s.replace(",", ".")
-        # apenas ponto -> mantém (ponto decimal)
-        # nenhum separador -> mantém
+        # O separador que aparece por último é o decimal.
+        if s.rfind(",") > s.rfind("."):
+            s = s.replace(".", "").replace(",", ".")
+        else:
+            s = s.replace(",", "")
+    elif "," in s:
+        # "1,234,567" é milhar; "2500,50" é decimal.
+        s = s.replace(",", "") if re.fullmatch(r"\d{1,3}(,\d{3}){2,}", s) else s.replace(",", ".")
+    elif re.fullmatch(r"\d{1,3}(\.\d{3})+", s):
+        # "8.200" e "1.234.567": ponto como separador de milhar.
+        s = s.replace(".", "")
     return float(s)
 
 
