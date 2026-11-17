@@ -181,12 +181,44 @@ def remover_funcionario(lista):
     print(f"{nome} removido(a).\n")
 
 
+def editar_funcionario(lista):
+    """
+    Função: edita um funcionário escolhido pelo número da listagem.
+    Enter em branco mantém o valor atual de cada campo.
+    """
+    indice = escolher_funcionario(lista, "editar")
+    if indice is None:
+        return
+    atual = lista[indice]
+    print("Enter mantém o valor atual.")
+    novo = dict(atual)
+    for campo, rotulo in (("nome", "Nome"), ("cargo", "Cargo"), ("setor", "Setor")):
+        valor = input(f"{rotulo} [{atual[campo]}]: ").strip()
+        if valor:
+            novo[campo] = valor
+    salario_str = input(f"Salário [{atual['salario']:.2f}]: ").strip()
+    if salario_str:
+        try:
+            salario = parse_salario(salario_str)
+        except ValueError:
+            print("Erro: salário inválido. Nada foi alterado.\n")
+            return
+        if salario <= 0:
+            print("Erro: o salário precisa ser maior que zero. Nada foi alterado.\n")
+            return
+        novo["salario"] = salario
+    lista[indice] = novo
+    salvar_dados(lista)
+    print(f"{novo['nome']} atualizado(a).\n")
+
+
 OPCOES = [
     ("1", "Adicionar funcionário", adicionar_funcionario),
     ("2", "Listar funcionários", listar_funcionarios),
     ("3", "Buscar funcionário por nome", buscar_funcionario),
     ("4", "Calcular média salarial", calcular_media_salarial),
     ("5", "Remover funcionário", remover_funcionario),
+    ("6", "Editar funcionário", editar_funcionario),
 ]
 
 

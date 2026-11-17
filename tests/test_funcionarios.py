@@ -112,3 +112,18 @@ def test_menu_sai_com_zero(monkeypatch, capsys):
     f.main()
     saida = capsys.readouterr().out
     assert "Opção inválida" in saida and "Encerrando" in saida
+
+
+def test_editar_mantem_campos_em_branco(monkeypatch):
+    lista = lista_exemplo()
+    responder(monkeypatch, "1", "", "Tech Lead", "", "6.500,00")
+    f.editar_funcionario(lista)
+    assert lista[0] == {"nome": "Ana", "cargo": "Tech Lead", "setor": "TI", "salario": 6500.0}
+    assert f.carregar_dados() == lista
+
+
+def test_editar_com_salario_invalido_nao_altera_nada(monkeypatch):
+    lista = lista_exemplo()
+    responder(monkeypatch, "2", "Bruno Lima", "", "", "-1")
+    f.editar_funcionario(lista)
+    assert lista == lista_exemplo()
