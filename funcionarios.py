@@ -87,6 +87,9 @@ def adicionar_funcionario(lista):
     except ValueError:
         print("Erro: salário inválido. Use apenas números, exemplo: 8.200,00 ou 2500.50.\n")
         return
+    if salario <= 0:
+        print("Erro: o salário precisa ser maior que zero.\n")
+        return
 
     funcionario = {
         "nome": nome,
