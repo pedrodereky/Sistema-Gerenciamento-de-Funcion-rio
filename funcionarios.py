@@ -118,10 +118,15 @@ def listar_funcionarios(lista):
 
 def buscar_funcionario(lista):
     """
-    Função: busca funcionário por nome (case-insensitive).
+    Função: busca funcionário por parte do nome (sem diferenciar maiúsculas).
     """
     nome_busca = input("Digite o nome do funcionário para buscar: ")
-    encontrados = [f for f in lista if f["nome"].strip().lower() == nome_busca.strip().lower()]
+    termo = nome_busca.strip().lower()
+    if not termo:
+        print("Digite ao menos uma letra do nome.\n")
+        return
+    # Busca parcial: "ana" encontra "Ana Souza" e "Mariana".
+    encontrados = [f for f in lista if termo in f["nome"].strip().lower()]
 
     if encontrados:
         print("\nFuncionário(s) encontrado(s):")
