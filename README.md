@@ -1,5 +1,7 @@
 # Sistema de Gerenciamento de Funcionários
 
+[![Testes](https://github.com/pedrodereky/Sistema-Gerenciamento-de-Funcion-rio/actions/workflows/testes.yml/badge.svg)](https://github.com/pedrodereky/Sistema-Gerenciamento-de-Funcion-rio/actions/workflows/testes.yml)
+
 Programa em Python para registrar e organizar os funcionários de uma empresa: nome, cargo, setor e salário, com listagem, busca e média salarial. Os dados ficam salvos num arquivo JSON entre as execuções.
 
 ## Funcionalidades
@@ -28,6 +30,8 @@ python funcionarios.py
 Os cadastros ficam em `funcionarios.json`, na mesma pasta. Se esse arquivo for corrompido, o programa guarda uma cópia em `funcionarios.json.corrompido` e avisa, em vez de sobrescrevê-lo.
 
 ## Testes
+
+22 testes com pytest, cada um usando um arquivo de dados temporário (os seus cadastros não são tocados):
 
 ```sh
 pip install pytest
