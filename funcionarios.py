@@ -21,7 +21,12 @@ def carregar_dados():
             for item in data:
                 item["salario"] = float(item.get("salario", 0))
             return data
-    except Exception:
+    except (json.JSONDecodeError, TypeError, ValueError, AttributeError) as e:
+        # Não descarta o arquivo: o próximo salvamento o sobrescreveria e todos
+        # os cadastros seriam perdidos. Guarda uma cópia antes de recomeçar.
+        backup = DATA_FILE.with_suffix(".json.corrompido")
+        DATA_FILE.replace(backup)
+        print(f"Aviso: {DATA_FILE.name} estava inválido ({e}). Uma cópia foi salva em {backup.name}.\n")
         return []
 
 
