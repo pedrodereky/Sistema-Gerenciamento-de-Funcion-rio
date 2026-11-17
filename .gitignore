@@ -1,0 +1,4 @@
+__pycache__/
+.pytest_cache/
+funcionarios.json
+funcionarios.json.corrompido
