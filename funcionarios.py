@@ -148,34 +148,68 @@ def calcular_media_salarial(lista):
     print(f"\nMédia salarial dos funcionários: R$ {media:.2f}\n")
 
 
+def escolher_funcionario(lista, acao):
+    """
+    Mostra a lista numerada e devolve o índice escolhido (0-based), ou None.
+    """
+    if not lista:
+        print("Nenhum funcionário cadastrado.\n")
+        return None
+    listar_funcionarios(lista)
+    escolha = input(f"Número do funcionário para {acao} (Enter para voltar): ").strip()
+    if not escolha:
+        return None
+    if not escolha.isdigit() or not 1 <= int(escolha) <= len(lista):
+        print("Número inválido.\n")
+        return None
+    return int(escolha) - 1
+
+
+def remover_funcionario(lista):
+    """
+    Função: remove um funcionário escolhido pelo número da listagem, após confirmação.
+    """
+    indice = escolher_funcionario(lista, "remover")
+    if indice is None:
+        return
+    nome = lista[indice]["nome"]
+    if input(f"Remover {nome}? (s/n): ").strip().lower() != "s":
+        print("Remoção cancelada.\n")
+        return
+    lista.pop(indice)
+    salvar_dados(lista)
+    print(f"{nome} removido(a).\n")
+
+
+OPCOES = [
+    ("1", "Adicionar funcionário", adicionar_funcionario),
+    ("2", "Listar funcionários", listar_funcionarios),
+    ("3", "Buscar funcionário por nome", buscar_funcionario),
+    ("4", "Calcular média salarial", calcular_media_salarial),
+    ("5", "Remover funcionário", remover_funcionario),
+]
+
+
 def main():
     """
     Função principal: exibe o menu e chama as funções correspondentes.
     """
     funcionarios = carregar_dados()
-    opcao = ""
+    acoes = {codigo: funcao for codigo, _, funcao in OPCOES}
 
-    while opcao != "5":
+    while True:
         print("=== Sistema de Funcionários por Setor ===")
-        print("1 - Adicionar funcionário")
-        print("2 - Listar funcionários")
-        print("3 - Buscar funcionário por nome")
-        print("4 - Calcular média salarial")
-        print("5 - Sair")
+        for codigo, rotulo, _ in OPCOES:
+            print(f"{codigo} - {rotulo}")
+        print("0 - Sair")
 
-        opcao = input("Escolha uma opção: ")
-
-        if opcao == "1":
-            adicionar_funcionario(funcionarios)
-        if opcao == "2":
-            listar_funcionarios(funcionarios)
-        if opcao == "3":
-            buscar_funcionario(funcionarios)
-        if opcao == "4":
-            calcular_media_salarial(funcionarios)
-        if opcao == "5":
+        opcao = input("Escolha uma opção: ").strip()
+        if opcao == "0":
             print("Encerrando o programa.\n")
-        if opcao not in ["1", "2", "3", "4", "5"]:
+            break
+        if opcao in acoes:
+            acoes[opcao](funcionarios)
+        else:
             print("Opção inválida. Tente novamente.\n")
 
 

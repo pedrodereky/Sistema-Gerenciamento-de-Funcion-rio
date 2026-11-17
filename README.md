@@ -10,6 +10,8 @@ Programa em Python para registrar e organizar os funcionários de uma empresa: n
 | 2. Listar funcionários | Mostra todos os cadastrados |
 | 3. Buscar por nome | Busca por parte do nome, sem diferenciar maiúsculas ("ana" encontra "Ana Souza" e "Mariana") |
 | 4. Média salarial | Calcula a média dos salários |
+| 5. Remover funcionário | Escolhe pelo número da listagem e pede confirmação |
+| 0. Sair | |
 
 O salário aceita os formatos brasileiro e americano: `8.200,00`, `8.200`, `8,200.00`, `2500.50` e `R$ 3.000,00`. Valores zerados ou negativos são recusados.
 
