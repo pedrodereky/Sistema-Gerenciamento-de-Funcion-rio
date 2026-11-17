@@ -108,7 +108,7 @@ def test_remover_cancelado_ou_numero_invalido_nao_altera(monkeypatch):
 
 
 def test_menu_sai_com_zero(monkeypatch, capsys):
-    responder(monkeypatch, "7", "0")
+    responder(monkeypatch, "9", "0")
     f.main()
     saida = capsys.readouterr().out
     assert "Opção inválida" in saida and "Encerrando" in saida
@@ -127,3 +127,17 @@ def test_editar_com_salario_invalido_nao_altera_nada(monkeypatch):
     responder(monkeypatch, "2", "Bruno Lima", "", "", "-1")
     f.editar_funcionario(lista)
     assert lista == lista_exemplo()
+
+
+def test_resumo_por_setor():
+    lista = [
+        {"nome": "Ana", "cargo": "", "setor": "TI", "salario": 5000.0},
+        {"nome": "Bia", "cargo": "", "setor": "ti", "salario": 7000.0},
+        {"nome": "Caio", "cargo": "", "setor": "RH", "salario": 4000.0},
+        {"nome": "Davi", "cargo": "", "setor": "  ", "salario": 3000.0},
+    ]
+    assert f.resumo_por_setor(lista) == [
+        ("RH", 1, 4000.0),
+        ("Sem setor", 1, 3000.0),
+        ("TI", 2, 6000.0),
+    ]

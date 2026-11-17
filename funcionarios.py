@@ -148,6 +148,34 @@ def calcular_media_salarial(lista):
     print(f"\nMédia salarial dos funcionários: R$ {media:.2f}\n")
 
 
+def resumo_por_setor(lista):
+    """
+    Função: agrupa os funcionários por setor e devolve
+    [(setor, quantidade, média salarial)], em ordem alfabética de setor.
+    Setores que só diferem em maiúsculas ("TI" e "ti") contam como um só, com o
+    nome da primeira grafia encontrada. Setor em branco aparece como "Sem setor".
+    """
+    grupos = {}
+    for f in lista:
+        setor = f.get("setor", "").strip() or "Sem setor"
+        nome, salarios = grupos.setdefault(setor.lower(), (setor, []))
+        salarios.append(f["salario"])
+    return [(nome, len(s), sum(s) / len(s)) for _, (nome, s) in sorted(grupos.items())]
+
+
+def exibir_resumo_por_setor(lista):
+    """
+    Função: mostra quantidade de funcionários e média salarial de cada setor.
+    """
+    if not lista:
+        print("Nenhum funcionário cadastrado.\n")
+        return
+    print("\n--- Resumo por setor ---")
+    for setor, quantidade, media in resumo_por_setor(lista):
+        print(f"{setor}: {quantidade} funcionário(s) | média R$ {media:.2f}")
+    print()
+
+
 def escolher_funcionario(lista, acao):
     """
     Mostra a lista numerada e devolve o índice escolhido (0-based), ou None.
@@ -219,6 +247,7 @@ OPCOES = [
     ("4", "Calcular média salarial", calcular_media_salarial),
     ("5", "Remover funcionário", remover_funcionario),
     ("6", "Editar funcionário", editar_funcionario),
+    ("7", "Resumo por setor", exibir_resumo_por_setor),
 ]
 
 

@@ -12,6 +12,7 @@ Programa em Python para registrar e organizar os funcionários de uma empresa: n
 | 4. Média salarial | Calcula a média dos salários |
 | 5. Remover funcionário | Escolhe pelo número da listagem e pede confirmação |
 | 6. Editar funcionário | Altera nome, cargo, setor ou salário; Enter mantém o valor atual |
+| 7. Resumo por setor | Quantidade de funcionários e média salarial de cada setor |
 | 0. Sair | |
 
 O salário aceita os formatos brasileiro e americano: `8.200,00`, `8.200`, `8,200.00`, `2500.50` e `R$ 3.000,00`. Valores zerados ou negativos são recusados.
